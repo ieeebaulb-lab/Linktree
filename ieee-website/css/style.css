@@ -1,0 +1,232 @@
+/* Minimal Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #060032;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #222;
+  min-height: 100vh;
+  /*background-image: url('../images/Untitled design (1).png');
+  background-repeat: repeat;
+  background-size: 250px 250px; /* Increase size for more space */
+  background-position: top left;
+}
+
+.container {
+  max-width: 550px;
+  margin: 40px auto 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  padding: 32px 20px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('../images/main-back.jpg'); /* Add this line */
+  background-size: cover; /* or 'contain' or a specific size */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.avatar {
+  width: 300px;
+  height: 100px;
+  /*border-radius: 50%;*/
+  object-fit: cover;
+  margin-bottom: 5px;
+  /*box-shadow: 0 2px 8px rgba(0,0,0,0.07);*/
+  display: block;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.desc {
+  font-size: 1.08rem;
+  color: #444;
+  text-align: center;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.button-stack {
+  width: 100%;
+  margin: 28px 0 22px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  padding: 13px 16px;
+  border-radius: 9px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+.icon{
+ width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  margin-right: 12px;
+  margin-left: 25px;
+}
+
+.button span {
+  display: inline-block;
+  min-width: 120px; 
+}
+
+.whatsapp {
+  background: #f7f8fa;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.whatsapp:hover {
+  width:70%;
+  transition: opacity 0.4s,height 0.4s,width 0.4s;
+  background: #b8b7b7;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.15);
+  transform: translateY(-2px);
+}
+
+.instagram {
+  background: #f7f8fa;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.instagram:hover {
+  width:70%;
+  transition: opacity 0.4s,height 0.4s,width 0.4s;
+  filter: brightness(1.08);
+  background: #b8b7b7;
+  box-shadow: 0 4px 16px rgba(220,36,159,0.13);
+  transform: translateY(-2px);
+}
+
+.email {
+  background: #f7f8fa;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.email:hover {
+  width:70%;
+  transition: opacity 0.4s,height 0.4s,width 0.4s;
+  background: #b8b7b7;
+  box-shadow: 0 4px 16px rgba(0,114,198,0.13);
+  transform: translateY(-2px);
+}
+
+.event {
+  background: #f7f8fa;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.event:hover {
+  width:70%;
+  transition: opacity 0.4s,height 0.4s,width 0.4s;
+  background: #b8b7b7;
+  box-shadow: 0 4px 16px rgba(255,152,0,0.13);
+  transform: translateY(-2px);
+}
+
+.register {
+  background: #f7f8fa;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.register:hover {
+  width:70%;
+  transition: opacity 0.4s,height 0.4s,width 0.4s;
+  background: #b8b7b7;
+  box-shadow: 0 4px 16px rgba(76,175,80,0.13);
+  transform: translateY(-2px);
+}
+
+.ieee {
+  background: #f7f8fa;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ieee:hover {
+  width:70%;
+  transition: opacity 0.4s,height 0.4s,width 0.4s;
+  background: #b8b7b7;
+  box-shadow: 0 4px 16px rgba(0,98,155,0.13);
+  transform: translateY(-2px);
+}
+
+
+/* Hover styles only for devices that support hover (mouse) */
+@media (hover: hover) and (pointer: fine) {
+  .whatsapp:hover { background: #b8b7b7; }
+  .instagram:hover { background: #b8b7b7; }
+  .email:hover { background: #b8b7b7; }
+  .event:hover { background: #b8b7b7; }
+  .register:hover { background: #b8b7b7; }
+  .ieee:hover { background: #b8b7b7; }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  body {
+    padding: 0; 
+  }
+  .container {
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+  h1 {
+    font-size: 1.35rem;
+  }
+  .avatar {
+    width: 180px;      /* Increase logo size on mobile */
+    height: 110px;
+    max-width: 90vw;   /* Prevent overflow */
+    object-fit: contain;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .button {
+    font-size: 1rem;
+    padding: 11px 0;
+  }
+}

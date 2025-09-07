@@ -1,0 +1,68 @@
+/* --------------------------
+   Events Gallery
+-------------------------- */
+.events {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.event-image {
+  width: 220px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.event-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Lightbox overlay */
+#lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+}
+
+#close-lightbox {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 3rem;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .event-image {
+    width: 90%;
+    height: auto;
+  }
+
+  #close-lightbox {
+    font-size: 2.5rem;
+    top: 10px;
+    right: 15px;
+  }
+}

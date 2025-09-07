@@ -1,0 +1,217 @@
+/* --------------------------
+   Admin Login Form
+-------------------------- */
+#login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  background-color: #060032;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  margin: 20px auto;
+  max-width: 450px;
+  color: white;
+  text-align: center;
+}
+
+#login-container h1 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#login-container input[type="email"],
+#login-container input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: white;
+  line-height: 1.4;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+#login-container input[type="email"]:focus,
+#login-container input[type="password"]:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 5px rgba(26,115,232,0.5);
+}
+
+#login-container button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #1a73e8;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+#login-container button:hover {
+  background-color: #1669c1;
+  transform: translateY(-1px);
+}
+
+#login-error {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ff4d4d;
+}
+
+/* --------------------------
+   Admin Panel
+-------------------------- */
+#admin-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  max-width: 900px;
+  gap: 10px;
+}
+
+#admin-panel input[type="file"] {
+  padding: 5px;
+}
+
+#admin-panel button {
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  border: none;
+  background-color: #060032;
+  color: white;
+  font-weight: bold;
+  transition: background 0.2s, transform 0.2s;
+}
+
+#admin-panel button:hover {
+  background-color: #1a0d66;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  #login-container {
+    width: 90%;
+    padding: 20px;
+  }
+
+  #login-container h1 {
+    font-size: 24px;
+  }
+
+  #admin-panel button {
+    width: 80%;
+  }
+}
+
+
+
+
+
+
+
+
+/* --------------------------
+   Events Gallery
+-------------------------- */
+.events {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.event-image {
+  width: 220px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.event-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+/* Admin Panel button on events page */
+.event-admin-btn {
+  padding: 10px 20px;
+  background-color: #1a73e8;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  margin-top: 20px;
+}
+
+.event-admin-btn:hover {
+  background-color: #1669c1;
+  transform: translateY(-2px);
+}
+
+/* Lightbox overlay */
+#lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+}
+
+#close-lightbox {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 3rem;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Admin mode highlight */
+.admin-mode {
+  border: 2px dashed #ff0000;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .event-image {
+    width: 90%;
+    height: auto;
+  }
+
+  #close-lightbox {
+    font-size: 2.5rem;
+    top: 10px;
+    right: 15px;
+  }
+}
+
