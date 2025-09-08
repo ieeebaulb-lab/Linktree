@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IEEE Admin Login</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+  <div id="login-container">
+    <h1>Admin Login</h1>
+
+    <!-- Optional small logo -->
+    <img src="../images/main-logo2.png" alt="IEEE Logo" style="width:200px; margin-bottom: 20px;">
+
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button id="loginBtn">Login</button>
+
+    <div id="login-error"></div>
+  </div>
+
+  <script>
+    const loginBtn = document.getElementById('loginBtn');
+    const loginError = document.getElementById('login-error');
+
+    loginBtn.addEventListener('click', () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      // Simple static check for demo; replace with real auth logic later
+      if(email === "admin@gmail.com" && password === "123456") {
+        window.location.href = "update.html"; e
+      } else {
+        loginError.textContent = "Invalid email or password";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Supabase Test Login</title>
+</head>
+<body>
+  <h2>Test Login Page</h2>
+  <form id="login-form">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+  </form>
+  <p id="result"></p>
+
+  <!-- Load Supabase library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    const supabaseUrl = "https://fyurqwtfozfpaxlujyzb.supabase.co"; 
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5dXJxd3Rmb3pmcGF4bHVqeXpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNjYyODgsImV4cCI6MjA3Mjc0MjI4OH0.3IbSyAGabc3PEvQElOlCLCNvxWvu-BzZP3Js4B0LuEY"; // paste your anon public key here
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    const form = document.getElementById('login-form');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        result.textContent = "Login failed: " + error.message;
+        result.style.color = "red";
+      } else {
+        result.textContent = "Login successful! User ID: " + data.user.id;
+        result.style.color = "green";
+      }
+    });
+  </script>
+</body>
+</html>

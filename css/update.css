@@ -1,0 +1,74 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #1e1e3f;
+  color: white;
+  margin:0;
+  padding:0;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 20px;
+  background: rgba(0,0,50,0.9);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.upload-controls {
+  margin-bottom: 20px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+
+.upload-controls input, .upload-controls button{
+  padding:10px;
+  border-radius:6px;
+  border:none;
+}
+
+.upload-controls button{
+  background:#2b6ef6;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.upload-controls button:hover{
+  background:#1a4ed8;
+}
+
+#thumbs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+}
+
+.thumb{
+  background:#222;
+  border-radius:8px;
+  padding:5px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:180px;
+}
+
+.thumb img{
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+.thumb div{
+  margin:5px 0;
+}
+
+.thumb input[type="checkbox"]{
+  transform: scale(1.2);
+  margin-top:5px;
+  cursor:pointer;
+}

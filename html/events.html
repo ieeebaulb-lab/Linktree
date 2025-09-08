@@ -1,48 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IEEE Events</title>
-  <link rel="stylesheet" href="../css/style.css" />
-  <link rel="stylesheet" href="../css/events.css" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IEEE Events</title>
+<link rel="stylesheet" href="../css/events.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
-
 <div class="container">
-  <h1 style="color: white; font-weight: bold;">Upcoming Events</h1>
-  <div class="events" id="events-container">
-    <!-- Static images go here -->
-    <img src="../events/event1.jpg" alt="Event 1" class="event-image" />
-    <img src="../events/event2.jpg" alt="Event 2" class="event-image" />
-    <img src="../events/event4.jpg" alt="Event 4" class="event-image" />
+  <h1>Upcoming Events</h1>
+  <a href="admin.html" class="admin-btn" id="adminBtn">Admin Panel</a>
+
+  <div class="events" id="events-container"></div>
+
+  <div id="lightbox">
+    <span id="close-lightbox">&times;</span>
+    <img id="lightbox-img" src="" alt="Event"/>
   </div>
 </div>
 
-<!-- Lightbox overlay -->
-<div id="lightbox">
-  <span id="close-lightbox">&times;</span>
-  <img id="lightbox-img" src="" alt="Event" />
-</div>
-
 <script>
+const SUPABASE_URL = "https://xfykzbsxxrujvdhcjham.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmeWt6YnN4eHJ1anZkaGNqaGFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcyMzE0MjUsImV4cCI6MjA3MjgwNzQyNX0.8aaesEpnHtSj1rpj7HPyMYMO356yxTqg36NOR_vb40w";
+const BUCKET = "events";
+const ADMIN_ID = "admin";
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const eventsContainer = document.getElementById('events-container');
+
+// Load only visible images
+async function loadEvents() {
+  eventsContainer.innerHTML = 'Loading...';
+
+  const { data, error } = await supabase
+    .from('event_images')
+    .select('*')
+    .eq('visible', true)
+    .order('id', { ascending: false });
+
+  if (error) {
+    eventsContainer.innerHTML = 'Failed to load events';
+    console.error("Supabase query error:", error);
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    eventsContainer.innerHTML = 'No events found';
+    return;
+  }
+
+  eventsContainer.innerHTML = '';
+
+  data.forEach(item => {
+    if (!item.filename) {
+      console.warn("Skipping item with no filename:", item);
+      return;
+    }
+
+    const { data: publicUrlData, error: urlError } = supabase
+      .storage.from(BUCKET)
+      .getPublicUrl(`${ADMIN_ID}/${item.filename}`);
+
+    if (urlError) {
+      console.error("Error getting public URL for", item.filename, urlError);
+      return;
+    }
+
+    const url = publicUrlData?.publicUrl;
+    if (!url) {
+      console.warn("No public URL returned for", item.filename);
+      return;
+    }
+
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = item.filename;
+    img.className = 'event-image';
+    eventsContainer.appendChild(img);
+  });
+
+  attachLightbox();
+}
+
+// Lightbox
+function attachLightbox() {
   const images = document.querySelectorAll(".event-image");
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightbox-img");
   const closeBtn = document.getElementById("close-lightbox");
 
   images.forEach(img => {
-    img.addEventListener("click", () => {
-      lightbox.style.display = "flex";
+    img.addEventListener('click', () => {
+      lightbox.style.display = 'flex';
       lightboxImg.src = img.src;
     });
   });
 
-  closeBtn.addEventListener("click", () => lightbox.style.display = "none");
-  lightbox.addEventListener("click", e => {
-    if (e.target === lightbox) lightbox.style.display = "none";
+  closeBtn.addEventListener('click', () => lightbox.style.display = 'none');
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) lightbox.style.display = 'none';
   });
-</script>
+}
 
+loadEvents();
+</script>
 </body>
 </html>
+
+
+
+
+
+
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IEEE Events</title>
+<link rel="stylesheet" href="../css/events.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h1>Upcoming Events</h1>
+ <a href="admin.html" class="admin-btn" id="adminBtn">Admin Panel</a>
+
+<div id="lightbox">
+  <span id="close-lightbox">&times;</span>
+  <img id="lightbox-img" src="" alt="Event"/>
+</div>
+
+<script>
+const SUPABASE_URL = "https://fyurqwtfozfpaxlujyzb.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5dXJxd3Rmb3pmcGF4bHVqeXpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNjYyODgsImV4cCI6MjA3Mjc0MjI4OH0.3IbSyAGabc3PEvQElOlCLCNvxWvu-BzZP3Js4B0LuEY";
+const BUCKET = "events";
+const ADMIN_ID = "admin";
+
+const supabase = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const eventsContainer = document.getElementById('events-container');
+
+// Load only visible images
+async function loadEvents(){
+  eventsContainer.innerHTML='Loading...';
+  const {data,error} = await supabase.from('event_images').select('*').eq('visible',true).order('id',{ascending:false});
+  if(error){ eventsContainer.innerHTML='Failed to load events'; console.error(error); return; }
+  eventsContainer.innerHTML='';
+
+  data.forEach(item=>{
+    const url = supabase.storage.from(BUCKET).getPublicUrl(`${ADMIN_ID}/${item.filename}`).data.publicUrl;
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = item.filename;
+    img.className='event-image';
+    eventsContainer.appendChild(img);
+  });
+
+  attachLightbox();
+}
+
+// Lightbox
+function attachLightbox(){
+  const images=document.querySelectorAll(".event-image");
+  const lightbox=document.getElementById("lightbox");
+  const lightboxImg=document.getElementById("lightbox-img");
+  const closeBtn=document.getElementById("close-lightbox");
+
+  images.forEach(img=>{
+    img.addEventListener('click', ()=>{
+      lightbox.style.display='flex';
+      lightboxImg.src=img.src;
+    });
+  });
+
+  closeBtn.addEventListener('click',()=>lightbox.style.display='none');
+  lightbox.addEventListener('click',e=>{if(e.target===lightbox) lightbox.style.display='none';});
+}
+
+// Admin button with password
+
+
+loadEvents();
+</script>
+</body>
+</html>
+-->

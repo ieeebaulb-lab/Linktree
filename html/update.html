@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Upload - IEEE Events</title>
+  <link rel="stylesheet" href="../css/update.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h1>Admin Image Upload</h1>
+
+  <div class="upload-controls">
+    <input id="fileInput" type="file" accept="image/*" multiple />
+    <button id="uploadBtn">Upload</button>
+    <button id="refreshBtn">Refresh List</button>
+  </div>
+
+  <div id="thumbs"></div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://xfykzbsxxrujvdhcjham.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmeWt6YnN4eHJ1anZkaGNqaGFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcyMzE0MjUsImV4cCI6MjA3MjgwNzQyNX0.8aaesEpnHtSj1rpj7HPyMYMO356yxTqg36NOR_vb40w";
+const BUCKET = "events";
+const ADMIN_ID = "admin";
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const fileInput = document.getElementById('fileInput');
+const uploadBtn = document.getElementById('uploadBtn');
+const refreshBtn = document.getElementById('refreshBtn');
+const thumbs = document.getElementById('thumbs');
+
+// Unique filename
+function makeUniqueName(originalName){
+  const stamp = Date.now();
+  const rand = Math.random().toString(36).slice(2,7);
+  const safeName = originalName.replace(/\s+/g,'_');
+  return `${stamp}-${rand}-${safeName}`;
+}
+
+// Upload images
+uploadBtn.addEventListener('click', async ()=>{
+  if(!fileInput.files.length) return alert('Select images first');
+  uploadBtn.disabled = true;
+  uploadBtn.textContent = 'Uploading...';
+
+  for(const file of fileInput.files){
+    const filename = makeUniqueName(file.name);
+    const path = `${ADMIN_ID}/${filename}`;
+    const {error} = await supabase.storage.from(BUCKET).upload(path, file, {upsert:true});
+    if(error){ alert("Upload failed: "+error.message); continue; }
+
+    // Insert into table if not exists
+    const {error: tblErr} = await supabase.from('event_images').upsert({filename, visible:false}, {onConflict:'filename'});
+    if(tblErr) console.error('Table insert error', tblErr);
+  }
+
+  uploadBtn.disabled = false;
+  uploadBtn.textContent = 'Upload';
+  fileInput.value = '';
+  refreshThumbs();
+});
+
+// Load thumbnails and visibility
+async function refreshThumbs(){
+  thumbs.innerHTML = 'Loading...';
+  const {data,error} = await supabase.from('event_images').select('*').order('id',{ascending:false});
+  if(error){ thumbs.innerHTML = 'Error loading images'; return; }
+  thumbs.innerHTML = '';
+
+  data.forEach(item=>{
+    const url = supabase.storage.from(BUCKET).getPublicUrl(`${ADMIN_ID}/${item.filename}`).data.publicUrl;
+    const div = document.createElement('div');
+    div.className = 'thumb';
+
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = item.filename;
+
+    const label = document.createElement('div');
+    label.textContent = item.filename;
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = item.visible;
+    checkbox.addEventListener('change', ()=>toggleVisibility(item.filename, checkbox.checked));
+
+    div.appendChild(img);
+    div.appendChild(label);
+    div.appendChild(checkbox);
+    thumbs.appendChild(div);
+  });
+}
+
+// Toggle visibility in Supabase
+async function toggleVisibility(filename, visible){
+  const {error} = await supabase.from('event_images').update({visible}).eq('filename',filename);
+  if(error) console.error('Visibility update error', error);
+}
+
+refreshBtn.addEventListener('click', refreshThumbs);
+refreshThumbs();
+</script>
+</body>
+</html>
+
