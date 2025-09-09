@@ -6,35 +6,93 @@
   <title>IEEE Admin Login</title>
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/admin.css" />
+  <link rel="icon" href="data:,">
 </head>
 <body>
   <div id="login-container">
     <h1>Admin Login</h1>
-
-    <!-- Optional small logo -->
     <img src="../images/main-logo2.png" alt="IEEE Logo" style="width:200px; margin-bottom: 20px;">
-
     <input type="email" id="email" placeholder="Email" />
     <input type="password" id="password" placeholder="Password" />
     <button id="loginBtn">Login</button>
-
-    <div id="login-error"></div>
+    <div id="login-error" style="color: red; margin-top: 10px;"></div>
   </div>
 
+  <!-- Supabase and bcryptjs -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.33.0/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+
   <script>
-    const loginBtn = document.getElementById('loginBtn');
-    const loginError = document.getElementById('login-error');
+    document.addEventListener('DOMContentLoaded', () => {
+      // Assign bcrypt global
+      const bcrypt = window.dcodeIO.bcrypt;
 
-    loginBtn.addEventListener('click', () => {
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
+      const SUPABASE_URL = "https://xfykzbsxxrujvdhcjham.supabase.co";
+      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmeWt6YnN4eHJ1anZkaGNqaGFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcyMzE0MjUsImV4cCI6MjA3MjgwNzQyNX0.8aaesEpnHtSj1rpj7HPyMYMO356yxTqg36NOR_vb40w";
 
-      // Simple static check for demo; replace with real auth logic later
-      if(email === "admin@gmail.com" && password === "123456") {
-        window.location.href = "update.html"; e
-      } else {
-        loginError.textContent = "Invalid email or password";
-      }
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      const loginBtn = document.getElementById('loginBtn');
+      const loginError = document.getElementById('login-error');
+
+      loginBtn.addEventListener('click', async () => {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if (!email || !password) {
+          loginError.textContent = "Please enter both email and password.";
+          return;
+        }
+
+        try {
+          // Fetch admin row
+          const { data: user, error } = await supabaseClient
+            .from('admins')
+            .select('email, password_hash')
+            .eq('email', email)
+            .single();
+
+          console.log("Supabase user row:", user);
+
+          if (error || !user) {
+            loginError.textContent = "Invalid email or password";
+            return;
+          }
+
+          let match = false;
+
+          // If password_hash looks like a bcrypt hash (starts with $2), compare normally
+          if (user.password_hash.startsWith("$2")) {
+            match = await bcrypt.compare(password, user.password_hash);
+          } else {
+            // Plain text detected (for testing only)
+            console.warn("Plain text password detected. Hashing for testing purposes.");
+            const newHash = bcrypt.hashSync(user.password_hash, bcrypt.genSaltSync(10));
+            match = password === user.password_hash;
+
+            console.log("Generated temporary hash (not stored in Supabase):", newHash);
+          }
+
+          console.log("Password match?", match);
+
+          if (match) {
+            window.location.href = "update.html";
+          } else {
+            loginError.textContent = "Invalid email or password";
+          }
+
+        } catch (err) {
+          console.error(err);
+          loginError.textContent = "An error occurred. Try again.";
+        }
+      });
+
+      // Optional helper to generate a bcrypt hash for new admin
+      window.generateHash = function(password) {
+        const hash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+        console.log("Store this hash in Supabase for your admin:", hash);
+        return hash;
+      };
     });
   </script>
 </body>
