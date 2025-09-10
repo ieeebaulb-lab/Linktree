@@ -13,6 +13,10 @@ body {
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.5);
   text-align: center;
+  background-image: url('../images/main-back.jpg'); 
+  background-size: cover; 
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 h1 {
@@ -20,17 +24,7 @@ h1 {
   font-size: 2.5rem;
   color: #f0f0f0;
 }
-.admin-btn {
-  display: inline-block;
-  padding: 10px 20px;
-  margin-bottom: 30px;
-  background-color: #2b6ef6;
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background 0.2s, transform 0.2s;
-}
+
 
 .admin-btn:hover {
   background-color: #1a4ed8;
@@ -57,6 +51,13 @@ h1 {
   transform: scale(1.05);
   box-shadow: 0 6px 15px rgba(0,0,0,0.5);
 }
+
+
+.event-image:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
 #lightbox {
   display: none;
   position: fixed;
@@ -80,4 +81,27 @@ h1 {
   font-size: 2rem;
   color: white;
   cursor: pointer;
+}
+@media (max-width: 600px) {
+  .container {
+    width: 100%;
+    max-width: 100%;   /* don’t cap it */
+    margin: 0;         /* remove outer space */
+    padding: 15px;     /* keep a little inner space */
+    border-radius: 0;  /* full screen look */
+    box-shadow: none;  /* optional: remove heavy shadow */
+    min-height: 100vh; /* full height fit */
+  }
+
+  h1 {
+    font-size: 38px; 
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+
+  .event-image {
+    max-width: 90%;    /* event images scale nicely */
+    height: auto;
+  }
 }
